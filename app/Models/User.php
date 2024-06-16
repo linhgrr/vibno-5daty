@@ -32,6 +32,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public static function findorFail($id)
+    {
+        return view('errors.404');
+    }
+
     /**
      * Get the attributes that should be cast.
      *

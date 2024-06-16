@@ -97,11 +97,15 @@
         .comment-form button:hover {
             background-color: #555;
         }
+
+        a{
+            text-decoration: none;
+        }
     </style>
     <main>
 
         <article class="blog-post">
-            <span class="post-author">{{$post[0]->name}}</span>
+            <a class = "post-author" href="{{ route('user.show', ['id' => $post[0]->user_id]) }}">{{$post[0]->name}}</a>
             <span class="post-meta">{{$post[0]->created_at}}</span>
             <h2 class="post-title">{{$post[0]->title}}</h2>
             <div class="post-content">

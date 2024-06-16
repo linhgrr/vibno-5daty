@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\PostsController;
 Auth::routes();
 
 Route::get('/', [PagesController::class, 'index']);
+Route::get('/home', [PagesController::class, 'index']);
 Route::get('/about', [PagesController::class, 'about'])->name('about');
 
 Route::get('/posts', [PostsController::class, 'index'])->name('posts');
@@ -21,4 +23,6 @@ Route::post('/posts', [PostsController::class, 'store'])->name('post.store')->mi
 Route::post('comments', [CommentsController::class, 'store'])->middleware('auth');
 
 // profile
-Route::get('/users/{id}', [PostsController::class, 'show']);
+Route::get('/users/{id}', [UsersController::class, 'show'])
+->name('user.show')
+->where('id', '[0-9]+')->middleware('auth');

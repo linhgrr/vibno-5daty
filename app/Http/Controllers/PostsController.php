@@ -20,6 +20,7 @@ class PostsController extends Controller
     }
 
     public function show($id){
+        DB::table('posts')->where('id', $id)->increment('views');
         $post = DB::select("select p.*, u.name from posts p
                                 join users u on p.user_id = u.id
                                 where p.id = ?",[$id]);

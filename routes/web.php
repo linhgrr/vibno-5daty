@@ -19,41 +19,6 @@ Route::get('/posts/create', [PostsController::class, 'create'])->name('post.crea
 Route::post('/posts', [PostsController::class, 'store'])->name('post.store')->middleware('auth');
 //Comments
 Route::post('comments', [CommentsController::class, 'store'])->middleware('auth');
-// Route::get('/home', function () {
-//     return view('home');
-// })->name('home');
 
-// Route::get('/blog', [
-//     BlogController::class,
-//     'index'
-// ]);
-
-// Route::get('/blog/{id}', [
-//     BlogController::class,
-//     'detail'
-// ])->where('id', '[0-9]+');
-
-// Route::get('/', function () {
-//     return view('home');
-// });
-
-// Route::get('/users', function () {
-//     return ['IT'=>'2 bai', 'Health'=>'3 bai'];
-// });
-
-// // response an object
-// Route::get('/about-me', function (){
-//     return response()->json([
-//         "name" => "Nguyen Bui Tuan Linh",
-//         "age" => 21
-//     ]);
-// });
-
-// // response another request = redirect
-// Route::get('/alo', function () {
-//     return redirect('/about-me');
-// });
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// profile
+Route::get('/users/{id}', [PostsController::class, 'show']);

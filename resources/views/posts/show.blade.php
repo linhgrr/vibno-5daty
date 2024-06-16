@@ -101,7 +101,7 @@
     <main>
 
         <article class="blog-post">
-            <span class="post-author">Author: {{$post[0]->name}}</span>
+            <span class="post-author">{{$post[0]->name}}</span>
             <span class="post-meta">{{$post[0]->created_at}}</span>
             <h2 class="post-title">{{$post[0]->title}}</h2>
             <div class="post-content">

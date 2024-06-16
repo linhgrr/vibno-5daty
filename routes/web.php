@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\FollowsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -26,3 +27,7 @@ Route::post('comments', [CommentsController::class, 'store'])->middleware('auth'
 Route::get('/users/{id}', [UsersController::class, 'show'])
 ->name('user.show')
 ->where('id', '[0-9]+')->middleware('auth');
+
+//follow
+Route::post('/follows/follow', [FollowsController::class, 'follow'])->middleware('auth');
+Route::post('/follows/unfollow', [FollowsController::class, 'unfollow'])->middleware('auth');

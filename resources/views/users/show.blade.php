@@ -114,14 +114,32 @@
 <div class="infomation">
     <div class="personal">
         <img class="avatar" alt="Tlinh"></img>
-        <h1 class="name">{{$user->name}}</h1>
+        <div class="thong-tin">
+            <h1 class="name">{{$user->name}}</h1>
+            <p class="follower">{{$numberOfFollowers}} follower</p>
+        </div>
     </div>
 
     @if(Auth::user()->id != $user->id)
         @if($isFollowing)
-            <button>Huy follow</button>
+
+            <form action="/follows/unfollow" method="post">
+                @csrf
+                <input name = "following" type="text" style="display: none" value="{{$user->id}}">
+                <input name = "follower" type="text" style="display: none" value="{{Auth::user()->id}}">
+                <button class="btn btn-outline-primary">Unfollow</button>
+            </form>
+
         @else
-            <button>Follow</button>
+
+            @method('PUT')
+            <form action="/follows/follow" method="post">
+                @csrf
+                <input name = "following" type="text" style="display: none" value="{{$user->id}}">
+                <input name = "follower" type="text" style="display: none" value="{{Auth::user()->id}}">
+                <button class="btn btn-outline-primary">Follow</button>
+            </form>
+
         @endif
     @else
         <button>Change info</button>
@@ -135,7 +153,7 @@
     <a href="#" onclick="showContent('follower')">Người theo dõi</a>
 </div>
 <div class="content">
-    <div id="bai_viet" class="tab-content">
+    <div id="bai_viet" class="tab-content" style="display: block">
         <div class="post-list">
             @foreach($posts as $item)
                 <div class="post-card">
@@ -155,7 +173,13 @@
         </div>
     </div>
     <div id="following" class="tab-content" style="display:none;">Nội dung Series</div>
-    <div id="follower" class="tab-content" style="display:none;">Nội dung Câu hỏi</div>
+    <div id="follower" class="tab-content" style="display:none;">
+        @if(!empty($followers))
+            @foreach($followers as $x)
+                <h2>{{$x->name}}</h2>
+            @endforeach
+        @endif
+    </div>
 </div>
 
 <script>

@@ -45,7 +45,6 @@
     </style>
 
     <div class="container">
-        <h1>Create a Blog Post</h1>
         <form action="/posts" method="post">
             @csrf
             <label for="title">Title:</label>
@@ -54,7 +53,7 @@
             <label for="content">Content:</label>
             <textarea class="content" name="content" id="editor"></textarea>
 
-            <button type="submit">Submit</button>
+            <button style="margin-top: 30px" class="btn btn-outline-primary" type="submit">Xuất bản bài viết</button>
         </form>
     </div>
 

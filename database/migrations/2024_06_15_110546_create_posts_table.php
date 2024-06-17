@@ -18,7 +18,10 @@ return new class extends Migration
             $table->text('content');
             $table->integer('views'); // Sửa thành integer
             $table->timestamps(); // Chỉ cần gọi một lần
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
 
         });
     }

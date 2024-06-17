@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,26 +12,97 @@ use function Laravel\Prompts\table;
 class PostsController extends Controller
 {
     public function index(){
-//        $posts = DB::select('select * from posts');
-        $posts = DB::select("select p.*, u.name from posts p
-                                join users u on p.user_id = u.id");
+        $posts = DB::table('posts as p')
+            ->join('users as u', 'p.user_id', '=', 'u.id')
+            ->select('p.*', 'u.*')
+            ->orderBy('p.created_at', 'desc')
+            ->get();
+
+        $oneWeekAgo = Carbon::now()->subWeek()->toDateString();
+
+        $trendingPosts = DB::table('posts as p')
+            ->join('users as u', 'p.user_id', '=', 'u.id')
+            ->select('p.*', 'u.*')
+            ->where('p.created_at', '>=', $oneWeekAgo)
+            ->orderBy('p.views', 'desc')
+            ->get();
+
+        if (Auth::check()) {
+            $followingPosts = DB::table('posts as p')
+                ->join('users as u', 'p.user_id', '=', 'u.id')
+                ->whereIn('p.user_id', function ($query) {
+                    $query->select('following_id')
+                        ->from('follows')
+                        ->where('follower_id', Auth::user()->id);
+                })
+                ->select('p.*', 'u.*')
+                ->orderBy('p.created_at', 'desc')
+                ->get();
+        } else $followingPosts = null;
+
         return view('posts.index',[
             'posts' => $posts,
+            'followingPosts' => $followingPosts,
+            'trendingPosts' => $trendingPosts
         ]);
     }
 
     public function show($id){
+        if (Auth::check()) {
+            $user_id = Auth::user()->id;
+
+            $voted = DB::table('votes')
+                ->where('post_id', $id)
+                ->where('user_id', $user_id)
+                ->first();
+
+            if (is_null($voted)) {
+                $isVoted = 0;
+            } else if ($voted->vote_type == "up") {
+                $isVoted = 1;
+            } else {
+                $isVoted = -1;
+            }
+
+            $userUpVotes = DB::table('votes')
+                ->where('post_id', $id)
+                ->where('vote_type', 'up')
+                ->count();
+
+            $userDownVotes = DB::table('votes')
+                ->where('post_id', $id)
+                ->where('vote_type', 'down')
+                ->count();
+
+            $voteCount = $userUpVotes - $userDownVotes;
+        } else {
+            $isVoted = 0;
+            $voteCount = null;
+        }
+
         DB::table('posts')->where('id', $id)->increment('views');
-        $post = DB::select("select p.*, u.name from posts p
-                                join users u on p.user_id = u.id
-                                where p.id = ?",[$id]);
-        $comments = DB::select("select c.*, u.name as name from comments c
-                                    join users u on c.user_id = u.id
-                                    where post_id = ?",[$id]);
+        $post = DB::table('posts as p')
+            ->join('users as u', 'p.user_id', '=', 'u.id')
+            ->where('p.id', $id)
+            ->select('p.*', 'u.*')
+            ->first();
+
+        $comments = DB::table('comments as c')
+            ->join('users as u', 'c.user_id', '=', 'u.id')
+            ->where('c.post_id', $id)
+            ->select('c.*', 'u.*')
+            ->get();
+
+        if ($post == null){
+            return redirect(route('posts'));
+        }
+
 
         return view('posts.show',[
             'post' => $post,
             'comments' => $comments,
+            'isVoted' => $isVoted,
+            'voteCount' => $voteCount
         ]);
     }
 

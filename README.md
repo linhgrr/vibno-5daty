@@ -1,7 +1,7 @@
 # Vibno Blog Project
 
 ## Giới thiệu
-Vibno Blog là một ứng dụng blog tương tự như [Viblo](https://viblo.asia), cung cấp các chức năng như đăng ký, đăng nhập, upload avatar, viết sửa xóa bài, xem bài viết, comment trong bài viết, follow người dùng khác, và vote up/vote down bài viết.
+Vibno Blog là một ứng dụng blog tương tự như [Viblo](https://viblo.asia), cung cấp các chức năng như đăng ký, đăng nhập, đổi mật khẩu, upload avatar, viết sửa xóa bài, xem bài viết, comment trong bài viết, follow người dùng khác, và vote up/vote down bài viết.
 
 ## Yêu cầu chức năng
 - Đăng ký, Đăng nhập
@@ -22,16 +22,20 @@ vibno-9day/
 |   |-- Exceptions/
 |   |-- Http/
 |   |   |-- Controllers/
-|   |   |   |-- AuthController.php
-|   |   |   |-- PostController.php
-|   |   |   |-- CommentController.php
-|   |   |   |-- FollowController.php
+|   |   |   |-- Controller.php
+|   |   |   |-- ChangePasswordController.php
+|   |   |   |-- UsersController.php
+|   |   |   |-- CommentsController.php
+|   |   |   |-- FollowsController.php
+|   |   |   |-- VotesController.php
+|   |   |   |-- PostsController.php
 |   |   |-- Middleware/
 |   |-- Models/
 |   |   |-- User.php
 |   |   |-- Post.php
 |   |   |-- Comment.php
 |   |   |-- Follow.php
+|   |   |-- Vote.php
 |   |-- Providers/
 |
 |-- bootstrap/
@@ -62,13 +66,17 @@ vibno-9day/
 ## Mô tả các thành phần chính:
 
 ### Controllers
-- **AuthController**: Xử lý đăng ký và đăng nhập người dùng.
+- **UsersController**: Xử lý cácdùng.
 
-- **PostController**: Xử lý các hành động liên quan đến bài viết như tạo, sửa, xóa, và xem bài viết.
+- **PostsController**: Xử lý các hành động liên quan đến bài viết như tạo, sửa, xóa, và xem bài viết.
 
-- **CommentController**: Xử lý comment trong bài viết.
+- **CommentsController**: Xử lý comment trong bài viết.
 
-- **FollowController**: Xử lý chức năng follow/unfollow giữa các người dùng.
+- **FollowsController**: Xử lý chức năng follow/unfollow giữa các người dùng.
+
+- **ChangePasswordController**: Xử lý chức năng đổi mật khẩu.
+
+- **VotesController**: Xử lý chức năng upvote/ downvote bài viết.
 
 ### Models
 - **User**: Model đại diện cho người dùng.
@@ -78,6 +86,8 @@ vibno-9day/
 - **Comment**: Model đại diện cho bình luận.
 
 - **Follow**: Model đại diện cho mối quan hệ follow giữa các người dùng.
+
+- **Vote**: Model đại diện cho việc upvote/ downvote bài viết.
 
 ### Routes
 - **api.php**: Định nghĩa các route API cho ứng dụng.
@@ -113,7 +123,8 @@ vibno-9day/
     - Người dùng có thể bầu chọn bài viết bằng cách vote up hoặc vote down để thể hiện quan điểm cá nhân.
   
 7. **Người dùng chỉnh sửa thông tin cá nhân**
-    - Người dùng có thể chỉnh sửa tên, email và ảnh đại diện của mình. 
+    - Người dùng có thể chỉnh sửa tên, email và ảnh đại diện của mình.
+    - Người dùng có thể đổi mật khẩu.
 
 
 ## Cài đặt
@@ -163,10 +174,5 @@ php artisan serve
 
 ### Xác Thực Dữ Liệu Đầu Vào
 - **Xác Thực Biểu Mẫu**: Sử dụng xác thực biểu mẫu của Laravel để làm sạch và xác thực đầu vào người dùng, ngăn chặn các cuộc tấn công SQL injection và các cuộc tấn công thông thường khác.
-
-### Xử Lý Lỗi
-- **Trang Lỗi Tùy Chỉnh**: Cung cấp các trang lỗi tùy chỉnh để ngăn chặn rò rỉ thông tin.
-
-## 
 
 

@@ -133,6 +133,32 @@
     .function{
         margin-left: auto;
     }
+
+    .change-info{
+        height: 50%;
+    }
+
+    .popup-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
@@ -168,7 +194,7 @@
 
         @endif
     @else
-        <a href="/users/update" class="btn btn-outline-primary">Change info</a>
+        <a href="/users/update" class="btn btn-outline-primary change-info">Change info</a>
     @endif
 
 </div>
@@ -195,27 +221,52 @@
                     </div>
                     @if(Auth::user()->id == $user->id)
                     <div class="function">
-                        <button  type="button" class="btn btn-primary edit">Edit</button>
-                        <button type="button" class="btn btn-danger delete">Danger</button>
+                        <a href="/posts/{{$item->id}}/edit"  type="button" class="btn btn-primary edit">Edit</a>
+                        <button type="button" class="btn btn-danger delete">Delete</button>
                     </div>
+
+                        <div class="popup-overlay" id="popup-overlay">
+                            <div class="popup">
+                                <p>Are you sure you want to delete?</p>
+                                <div class="btn-action" style="display:flex;">
+                                    <form action="/posts/{{$item->id}}/delete" method="post">
+                                        @csrf
+                                        <button type="submit" id="confirm-delete" class="btn btn-danger">Yes</button>
+                                    </form>
+                                    <button type="button" id="cancel-delete" class="btn btn-secondary">No</button>
+                                </div>
+
+                            </div>
+                        </div>
                     @endif
                 </div>
             @endforeach
         </div>
     </div>
     <div id="following" class="tab-content" style="display:none;">
-        @if(!empty($followings))
-            @foreach($followings as $x)
-                <h2>{{$x->name}}</h2>
-            @endforeach
-        @endif
+        <div class="post-list" style="display: flex">
+            @if(!empty($followings))
+                @foreach($followings as $x)
+                    <div class="user" style="width: calc(33% - 20px); display: flex">
+                        <img class="avatar" src="{{Storage::url($x->avatar)}}" alt="{{$x->name}}">
+                        <a href="{{route('user.show', ['id' => $x->id])}}"><h3 class="user-name">{{$x->name}}</h3></a>
+                    </div>
+                @endforeach
+            @endif
+        </div>
     </div>
+
     <div id="follower" class="tab-content" style="display:none;">
-        @if(!empty($followers))
-            @foreach($followers as $x)
-                <h2>{{$x->name}}</h2>
-            @endforeach
-        @endif
+        <div class="post-list" style="display: flex">
+            @if(!empty($followers))
+                @foreach($followers as $x)
+                    <div class="user" style="width: calc(33% - 20px); display: flex">
+                        <img class="avatar" src="{{Storage::url($x->avatar)}}" alt="{{$x->name}}">
+                        <a href="{{route('user.show', ['id' => $x->id])}}"><h3 class="user-name">{{$x->name}}</h3></a>
+                    </div>
+                @endforeach
+            @endif
+        </div>
     </div>
 </div>
 
@@ -234,5 +285,23 @@
         }
     }
 
+    document.querySelector('.delete').addEventListener('click', function() {
+        document.getElementById('popup-overlay').style.display = 'block';
+    });
+
+    document.getElementById('popup-overlay').addEventListener('click', function(event) {
+        if (event.target === this) {
+            this.style.display = 'none';
+        }
+    });
+
+    document.getElementById('cancel-delete').addEventListener('click', function() {
+        document.getElementById('popup-overlay').style.display = 'none';
+    });
+
+    document.getElementById('confirm-delete').addEventListener('click', function() {
+
+        document.getElementById('popup-overlay').style.display = 'none';
+    });
 </script>
 @endsection

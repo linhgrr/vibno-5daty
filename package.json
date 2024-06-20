@@ -7,13 +7,16 @@
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",
-        "axios": "^1.6.4",
+        "axios": "^1.7.2",
         "bootstrap": "^5.2.3",
         "laravel-vite-plugin": "^1.0",
         "sass": "^1.56.1",
         "vite": "^5.0"
     },
     "dependencies": {
-        "@ckeditor/ckeditor5-build-classic": "^41.4.2"
+        "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+        "@vitejs/plugin-vue": "^5.0.5",
+        "laravel-mix": "^6.0.49",
+        "vue": "^3.4.29"
     }
 }

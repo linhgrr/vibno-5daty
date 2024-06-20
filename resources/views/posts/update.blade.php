@@ -45,15 +45,15 @@
     </style>
 
     <div class="container">
-        <form action="/posts" method="post">
+        <form action="/posts/{{$post->id}}/edit-done" method="post">
             @csrf
             <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required>
+            <input value="{{$post->title}}" type="text" id="title" name="title" required>
 
             <label for="content">Content:</label>
-            <textarea class="content" name="content" id="editor"></textarea>
+            <textarea class="content" name="content" id="editor">{{$post->content}}</textarea>
 
-            <button style="margin-top: 30px" class="btn btn-outline-primary" type="submit">Xuất bản bài viết</button>
+            <button style="margin-top: 30px" class="btn btn-outline-primary" type="submit">Cập nhật bài viết</button>
         </form>
     </div>
 
@@ -64,19 +64,9 @@
             .create(document.querySelector('#editor'), {
                 toolbar: [
                     'heading', '|',
-                    'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'insertImage', '|',
+                    'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
                     'undo', 'redo'
-                ],
-                ckfinder: {
-                    uploadUrl: '/path/to/your/upload/handler'
-                },
-                image: {
-                    toolbar: [
-                        'imageTextAlternative',
-                        'imageStyle:full',
-                        'imageStyle:side'
-                    ]
-                }
+                ]
             })
             .catch(error => {
                 console.error(error);

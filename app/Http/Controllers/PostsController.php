@@ -14,7 +14,7 @@ class PostsController extends Controller
     public function index(){
         $posts = DB::table('posts as p')
             ->join('users as u', 'p.user_id', '=', 'u.id')
-            ->select('p.*', 'u.*')
+            ->select('p.*', 'u.name', 'u.avatar')
             ->orderBy('p.created_at', 'desc')
             ->get();
 
@@ -22,7 +22,7 @@ class PostsController extends Controller
 
         $trendingPosts = DB::table('posts as p')
             ->join('users as u', 'p.user_id', '=', 'u.id')
-            ->select('p.*', 'u.*')
+            ->select('p.*', 'u.name', 'u.avatar')
             ->where('p.created_at', '>=', $oneWeekAgo)
             ->orderBy('p.views', 'desc')
             ->get();
@@ -35,7 +35,7 @@ class PostsController extends Controller
                         ->from('follows')
                         ->where('follower_id', Auth::user()->id);
                 })
-                ->select('p.*', 'u.*')
+                ->select('p.*', 'u.name', 'u.avatar')
                 ->orderBy('p.created_at', 'desc')
                 ->get();
         } else $followingPosts = null;
@@ -84,13 +84,13 @@ class PostsController extends Controller
         $post = DB::table('posts as p')
             ->join('users as u', 'p.user_id', '=', 'u.id')
             ->where('p.id', $id)
-            ->select('p.*', 'u.*')
+            ->select('p.*', 'u.name', 'u.avatar')
             ->first();
 
         $comments = DB::table('comments as c')
             ->join('users as u', 'c.user_id', '=', 'u.id')
             ->where('c.post_id', $id)
-            ->select('c.*', 'u.*')
+            ->select('c.*', 'u.name', 'u.avatar')
             ->get();
 
         if ($post == null){
@@ -123,5 +123,50 @@ class PostsController extends Controller
         $post->save();
 
         return redirect()->route('posts');
+    }
+
+    public function update($id){
+        $post = DB::table('posts')
+                ->where('id', $id)
+                ->first();
+        if ($post->user_id != Auth::user()->id){
+            return redirect('/');
+        }
+
+        return view('posts.update', [
+            'post'=>$post
+        ]);
+    }
+
+    public function edit(Request $request, $id)
+    {
+        $title = $request->input('title');
+        $content = $request->input('content');
+
+        DB::table('posts')
+            ->where('id', $id)
+            ->update(['title' => $title, 'content' => $content]);
+
+        return redirect()->route('post.show', ['id' => $id]);
+    }
+
+    public function search(Request $request){
+        $search = $request->input('q');
+        $posts = DB::table('posts as p')
+            ->join('users as u', 'p.user_id', '=', 'u.id')
+            ->where('title', 'like', '%'.$search.'%')
+            ->orWhere('content', 'like', '%'.$search.'%')
+            ->select('p.*', 'u.name', 'u.avatar')
+            ->get();
+
+        return view('search.index', ['posts' => $posts]);
+    }
+
+    public function delete($id)
+    {
+        DB::table('posts')
+            ->delete($id);
+
+        return redirect()->back();
     }
 }

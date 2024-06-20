@@ -56,10 +56,26 @@ class UsersController extends Controller
             $user->avatar = $avatarPath;
             $user->save();
 
-            return back()
-                ->with('success', 'Avatar updated successfully.');
+            return redirect(route('user.show', ['id' => Auth::user()->id]));
         }
 
-        return back()->with('error', 'Avatar update failed.');
+        return redirect(route('user.show', ['id' => Auth::user()->id]));
+    }
+
+    public function edit(Request $request)
+    {
+        $newName = $request->input('name');
+        if ($newName != null){
+            DB::table('users')
+                ->where('id', Auth::user()->id)
+                ->update(['name' => $newName]);
+        }
+        $newEmail = $request->input('email');
+        if ($newEmail != null){
+            DB::table('users')
+                ->where('id', Auth::user()->id)
+                ->update(['email' => $newEmail]);
+        }
+        return redirect()->route('user.show', ['id'=>Auth::user()->id]);
     }
 }

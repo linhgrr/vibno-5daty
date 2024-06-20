@@ -16,10 +16,38 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <style>
         .avatar{
-            width: 40px;
-            height: 40px;
+            width: 60px;
+            height: 60px;
             border-radius: 999px;
             margin-right: 15px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            overflow: hidden;
+        }
+        .search-bar input[type="text"] {
+            border: none;
+            padding: 10px;
+            width: 100%;
+            outline: none;
+        }
+        .search-bar button {
+            background-color: #4285f4; /* Màu xanh của nút tìm kiếm */
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .search-bar button img {
+            width: 16px;
+            height: 16px;
+        }
+        .search-bar input[type="text"]:focus {
+            outline: none;
         }
     </style>
 </head>
@@ -46,7 +74,17 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul  class="navbar-nav ms-auto">
+                        <form action="/posts/search" method="get">
+                            <div class="search-bar" style="margin-right: 20px;">
+                                <input name = "q" type="text" placeholder="search di...">
+                                <button type="submit">
+                                    <img src="https://img.icons8.com/ios-glyphs/30/ffffff/search.png" alt="Search Icon">
+                                </button>
+                            </div>
+                        </form>
+
                         <!-- Authentication Links -->
+
                         @auth
                             <li  class="nav-item">
                             <a

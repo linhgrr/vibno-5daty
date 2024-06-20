@@ -130,6 +130,7 @@
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
+    <img src="https://images.viblo.asia/full/9bbf02eb-7bf9-49d9-96c5-0a37fbeee91a.png" alt="">
 
     <div class="thumbnail">
         Tưng bừng khai trương, tăng giá 100%!

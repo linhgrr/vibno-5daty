@@ -13,7 +13,6 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <style>
         .avatar{
             width: 60px;
@@ -52,7 +51,6 @@
     </style>
 </head>
 <body>
-
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -74,7 +72,8 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul  class="navbar-nav ms-auto">
-                        <form action="/posts/search" method="get">
+                        <form action="/posts/search" method="post">
+                            @csrf
                             <div class="search-bar" style="margin-right: 20px;">
                                 <input name = "q" type="text" placeholder="search di...">
                                 <button type="submit">

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function Laravel\Prompts\table;
 
 class PostsController extends Controller
 {
@@ -126,8 +127,8 @@ class PostsController extends Controller
 
     public function update($id){
         $post = DB::table('posts')
-                ->where('id', $id)
-                ->first();
+            ->where('id', $id)
+            ->first();
         if ($post->user_id != Auth::user()->id){
             return redirect('/');
         }

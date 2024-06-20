@@ -1,52 +1,27 @@
 <?php
 
-use App\Http\Controllers\ChangePasswordController;
-use App\Http\Controllers\CommentsController;
-use App\Http\Controllers\FollowsController;
-use App\Http\Controllers\UsersController;
-use App\Http\Controllers\VotesController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PagesController;
-use App\Http\Controllers\PostsController;
+use Inertia\Inertia;
 
-Auth::routes();
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
 
-Route::get('/',[PostsController::class, 'index'])->name('posts');
-Route::get('/home', [PostsController::class, 'index'])->name('posts');
-Route::get('/about', [PagesController::class, 'about'])->name('about');
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/posts', [PostsController::class, 'index'])->name('posts');
-Route::get('/posts/{id}', [PostsController::class, 'show'])
-    ->name('post.show')
-    ->where('id', '[0-9]+');
-Route::get('/posts/create', [PostsController::class, 'create'])->name('post.create')->middleware('auth');
-Route::post('/posts', [PostsController::class, 'store'])->name('post.store')->middleware('auth');
-Route::post('/posts/{id}/edit-done', [PostsController::class, 'edit'])->where('id', '[0-9]+')->name('post.edit');
-Route::get('/posts/{id}/edit', [PostsController::class, 'update'])->where('id', '[0-9]+')->name('post.update')->middleware('auth');
-Route::post('/posts/{id}/delete', [PostsController::class, 'delete'])->where('id', '[0-9]+')->name('post.delete');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-//Comments
-Route::post('/comments', [CommentsController::class, 'store'])->middleware('auth');
-Route::get('/posts/{post}/comments', [CommentsController::class, 'index']);
-
-// profile
-Route::get('/users/{id}', [UsersController::class, 'show'])
-->name('user.show')
-->where('id', '[0-9]+')->middleware('auth');
-Route::get('/users/update', [UsersController::class, 'update'])->middleware('auth');
-Route::post('/users/edit', [UsersController::class, 'edit'])->middleware('auth');
-Route::post('profile/avatar', [UsersController::class, 'updateAvatar'])->name('avatar.update')->middleware('auth');
-Route::get('change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->middleware('auth')->name('password.change');
-Route::post('change-password', [ChangePasswordController::class, 'changePassword'])->middleware('auth')->name('password.update');
-//follow
-Route::post('/follows/follow', [FollowsController::class, 'follow'])->middleware('auth');
-Route::post('/follows/unfollow', [FollowsController::class, 'unfollow'])->middleware('auth');
-
-//vote
-Route::post('/votes/upvote', [VotesController::class, 'upvote'])->middleware('auth');
-Route::post('/votes/downvote', [VotesController::class, 'downvote'])->middleware('auth');
-Route::post('/votes/unvote', [VotesController::class, 'unvote'])->middleware('auth');
-
-//search
-Route::get('/posts/search', [PostsController::class, 'search'])->name('posts.search');
+require __DIR__.'/auth.php';

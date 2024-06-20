@@ -1,66 +1,178 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Vibno Blog Project
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Giới thiệu
+Vibno Blog là một ứng dụng blog tương tự như [Viblo](https://viblo.asia), cung cấp các chức năng như đăng ký, đăng nhập, đổi mật khẩu, upload avatar, viết sửa xóa bài, xem bài viết, comment trong bài viết, follow người dùng khác, và vote up/vote down bài viết.
 
-## About Laravel
+## Yêu cầu chức năng
+- Đăng ký, Đăng nhập
+- Viết bài
+- Xem bài viết
+- Comment trong bài viết
+- Follow users khác
+- Vote up/vote down bài viết
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Cấu trúc thư mục
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Dưới đây là cấu trúc thư mục của project:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```plaintext
+vibno-9day/
+|-- app/
+|   |-- Console/
+|   |-- Exceptions/
+|   |-- Http/
+|   |   |-- Controllers/
+|   |   |   |-- Controller.php
+|   |   |   |-- ChangePasswordController.php
+|   |   |   |-- UsersController.php
+|   |   |   |-- CommentsController.php
+|   |   |   |-- FollowsController.php
+|   |   |   |-- VotesController.php
+|   |   |   |-- PostsController.php
+|   |   |-- Middleware/
+|   |-- Models/
+|   |   |-- User.php
+|   |   |-- Post.php
+|   |   |-- Comment.php
+|   |   |-- Follow.php
+|   |   |-- Vote.php
+|   |-- Providers/
+|
+|-- bootstrap/
+|-- config/
+|-- database/
+|   |-- factories/
+|   |-- migrations/
+|   |-- seeders/
+|
+|-- public/
+|-- resources/
+|   |-- views/
+|-- routes/
+|   |-- api.php
+|   |-- web.php
+|
+|-- storage/
+|-- tests/
+|-- vendor/
+|
+|-- .env
+|-- artisan
+|-- composer.json
+|-- package.json
+|-- README.md
+|-- server.php
+```
+## Mô tả các thành phần chính:
 
-## Learning Laravel
+### Controllers
+- **UsersController**: Xử lý cácdùng.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **PostsController**: Xử lý các hành động liên quan đến bài viết như tạo, sửa, xóa, và xem bài viết.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **CommentsController**: Xử lý comment trong bài viết.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **FollowsController**: Xử lý chức năng follow/unfollow giữa các người dùng.
 
-## Laravel Sponsors
+- **ChangePasswordController**: Xử lý chức năng đổi mật khẩu.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **VotesController**: Xử lý chức năng upvote/ downvote bài viết.
 
-### Premium Partners
+### Models
+- **User**: Model đại diện cho người dùng.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- **Post**: Model đại diện cho bài viết.
 
-## Contributing
+- **Comment**: Model đại diện cho bình luận.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Follow**: Model đại diện cho mối quan hệ follow giữa các người dùng.
 
-## Code of Conduct
+- **Vote**: Model đại diện cho việc upvote/ downvote bài viết.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Routes
+- **api.php**: Định nghĩa các route API cho ứng dụng.
 
-## Security Vulnerabilities
+- **web.php**: Định nghĩa các route web cho ứng dụng.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Database
+- **Migrations**: Các file migration để tạo bảng cơ sở dữ liệu.
 
-## License
+- **Factories**: Các factory để tạo dữ liệu mẫu cho testing.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **Seeders**: Các seeder để điền dữ liệu mẫu vào cơ sở dữ liệu.
+
+## Quy trình làm việc
+
+1. **Người dùng đăng ký/đăng nhập**
+    - Người dùng có thể tạo tài khoản mới hoặc đăng nhập vào tài khoản hiện có.
+
+2. **Người dùng tạo bài viết mới**
+    - Sau khi đăng nhập, người dùng có thể tạo các bài viết mới để chia sẻ nội dung.
+    - Người dùng có thể chỉnh sửa nội dung hoặc xóa bài viết của mình.
+
+3. **Người dùng xem các bài viết**
+    - Người dùng có thể duyệt và xem các bài viết đã được đăng trên nền tảng.
+
+4. **Người dùng comment trong bài viết**
+    - Người dùng có thể để lại nhận xét và thảo luận trong phần bình luận của mỗi bài viết.
+
+5. **Người dùng follow các người dùng khác**
+    - Người dùng có thể theo dõi các tài khoản khác để cập nhật những bài viết mới từ họ.
+
+6. **Người dùng vote up/vote down bài viết**
+    - Người dùng có thể bầu chọn bài viết bằng cách vote up hoặc vote down để thể hiện quan điểm cá nhân.
+  
+7. **Người dùng chỉnh sửa thông tin cá nhân**
+    - Người dùng có thể chỉnh sửa tên, email và ảnh đại diện của mình.
+    - Người dùng có thể đổi mật khẩu.
+
+
+## Cài đặt
+
+### Yêu cầu hệ thống
+
+- PHP >= 7.4
+
+- Composer
+
+- MySQL
+
+### Các bước cài đặt
+Clone repository:
+```
+git clone https://github.com/linhgrr/vibno-9day.git
+cd vibno-9day
+```
+Cài đặt các package:
+```
+composer install
+npm install
+npm run dev
+```
+Tạo file .env và cấu hình kết nối cơ sở dữ liệu:
+
+```
+cp .env.example .env
+php artisan key:generate
+```
+Chạy migration và seeder:
+```
+php artisan migrate --seed
+```
+Khởi động server:
+```
+php artisan serve
+```
+## Bảo mật
+### Xác Thực Người Dùng
+- **Xác Thực Người Dùng**: Sử dụng hệ thống xác thực tích hợp của Laravel (`Auth::attempt`), kiểm tra quyền truy cập trước khi thực hiện các hành động CRUD trên bài viết và bình luận..
+- **Quản Lý Phiên Làm Việc**: Đảm bảo xử lý phiên làm việc an toàn với cấu hình mặc định của Laravel.
+- **Bảo Vệ CSRF**: Kích hoạt mặc định để bảo vệ chống lại các cuộc tấn công giả mạo yêu cầu giữa các trang.
+  
+### Quản Lý Mật Khẩu
+- **Mã Hóa**: Mật khẩu được mã hóa bằng `bcrypt` của Laravel để đảm bảo lưu trữ an toàn.
+
+### Xác Thực Dữ Liệu Đầu Vào
+- **Xác Thực Biểu Mẫu**: Sử dụng xác thực biểu mẫu của Laravel để làm sạch và xác thực đầu vào người dùng, ngăn chặn các cuộc tấn công SQL injection và các cuộc tấn công thông thường khác.
+
+

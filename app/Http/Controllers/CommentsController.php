@@ -8,25 +8,19 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentsController extends Controller
 {
-    public function index(Post $post)
-    {
-        return $post->comments;
+    public function index(){
+
+        return view('comments.index');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'content' => 'required',
-            'post_id' => 'required|exists:posts,id'
-        ]);
+    public function store(Request $request){
+        $comment = new Comment();
+        $comment->content = $request->input('comment-content');
+        $comment->user_id = Auth::user()->id;
+        $comment->post_id = $request->input('post-id');
+        $comment->timestamps = now();
+        $comment->save();
 
-        $comment = Comment::create([
-            'user_id' => Auth::id(),
-            'content' => $request->content,
-            'post_id' => $request->post_id,
-            'name' => auth()->user()->name,
-        ]);
-
-        return response()->json($comment);
+        return redirect()->back();
     }
 }

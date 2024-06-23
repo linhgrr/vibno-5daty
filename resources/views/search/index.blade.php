@@ -114,7 +114,7 @@
 
         <div class="post-list">
             <div class="search" style="margin-bottom: 30px;">
-                <form action="/posts/search" method="post">
+                <form action="/search" method="get">
                     @csrf
                     <div class="search-bar" style="margin-right: 20px;">
                         <input name = "q" type="text" placeholder="search di...">

@@ -24,7 +24,7 @@ Route::post('/posts', [PostsController::class, 'store'])->name('post.store')->mi
 Route::post('/posts/{id}/edit-done', [PostsController::class, 'edit'])->name('post.edit');
 Route::get('/posts/{id}/edit', [PostsController::class, 'update'])->name('post.update');
 Route::post('/posts/{id}/delete', [PostsController::class, 'delete'])->name('post.delete');
-Route::post('posts/search', [PostsController::class, 'search'])->name('post.search');
+Route::get('/search', [PostsController::class, 'search'])->name('post.search');
 //Comments
 Route::post('comments', [CommentsController::class, 'store'])->middleware('auth');
 
@@ -51,3 +51,7 @@ Route::get('/home', [App\Http\Controllers\PostsController::class, 'index'])->nam
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\PostsController::class, 'index'])->name('home');
+
+Route::get('/test', function () {
+    return view('test');
+});

@@ -31,3 +31,4 @@ class ChangePasswordController extends Controller
         return redirect()->back()->with('success', 'Đổi mật khẩu thành công.');
     }
 }
+

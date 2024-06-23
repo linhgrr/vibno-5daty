@@ -165,7 +165,7 @@
 
 <div class="infomation">
     <div class="personal">
-        <img src="{{Storage::url($user->avatar)}}" class="avatar" alt="{{$user->name}}"></img>
+        <img src="{{ Storage::url($user->avatar) }}" class="avatar" alt="{{ $user->name }}">
         <div class="thong-tin">
             <h1 class="name">{{$user->name}}</h1>
             <p class="follower">{{$numberOfFollowers}} follower</p>

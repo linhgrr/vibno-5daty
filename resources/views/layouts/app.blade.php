@@ -72,7 +72,7 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul  class="navbar-nav ms-auto">
-                        <form action="/posts/search" method="post">
+                        <form action="/run desearch" method="get">
                             @csrf
                             <div class="search-bar" style="margin-right: 20px;">
                                 <input name = "q" type="text" placeholder="search di...">
@@ -134,8 +134,6 @@
         <main class="py-4">
             @yield('content')
         </main>
-        <div id="app">
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

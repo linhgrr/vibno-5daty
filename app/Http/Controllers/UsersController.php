@@ -37,6 +37,7 @@ class UsersController extends Controller
         return view('users.update');
     }
 
+
     public function updateAvatar(Request $request)
     {
         $request->validate([
